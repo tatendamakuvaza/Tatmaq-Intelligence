@@ -20,19 +20,20 @@ class OpenAICompatibleClient:
 
     def __init__(
         self, *, api_key: str, model: str, base_url: str = "", timeout: float = 60.0,
-        transport: httpx.AsyncBaseTransport | None = None,
+        transport: httpx.AsyncBaseTransport | None = None, json_mode: bool = True,
     ) -> None:  # fmt: skip
         self.model = model
         self._url = f"{(base_url or DEFAULT_BASE_URL).rstrip('/')}/chat/completions"
         self._headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-        self._timeout, self._transport = timeout, transport
+        self._timeout, self._transport, self._json_mode = timeout, transport, json_mode
 
     async def complete_json(self, *, system: str, user: str, max_output_tokens: int = 2000) -> LLMResponse:
         payload = {
             "model": self.model,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
-            "response_format": {"type": "json_object"},
         }
+        if self._json_mode:
+            payload["response_format"] = {"type": "json_object"}
         try:
             async with httpx.AsyncClient(timeout=self._timeout, transport=self._transport) as client:
                 response = await client.post(self._url, headers=self._headers, json=payload)

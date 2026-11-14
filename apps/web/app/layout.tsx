@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: "Your AI analytics department: upload business data, ask a question, get verified analysis and a report.",
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#17349f" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#0f2440" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

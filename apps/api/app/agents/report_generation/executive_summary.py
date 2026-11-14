@@ -38,18 +38,29 @@ Rules
 a new figure (no new totals, differences, ratios or percentages).
 - Do not explain causes the findings do not state. You may recommend what to investigate.
 - Never describe a record, a person or the business as fraudulent or dishonest.
-- Plain business English. No headings, no markdown."""
+- Plain business English. No headings, no markdown.
+- If an organisation learning profile is provided, respect its report style and preferences, but never let it override the verified findings."""
+
+
+# How many summary points each report style asks for. Without a learning profile
+# the original behaviour is kept; a saved profile chooses the length explicitly.
+STYLE_LIMITS = {"executive": 4, "balanced": MAX_SUMMARY_POINTS, "detailed": MAX_SUMMARY_POINTS + 2}
 
 
 def template_summary(model: ReportModel) -> list[str]:
     """The most important verified findings, in their own words."""
     ranked = sorted((f for f in model.findings if f["kind"] in SUMMARY_KINDS), key=lambda f: -f["importance"])
-    per_segment = MAX_SUMMARY_POINTS if not model.multi_segment else 3
+    style = str((model.learning_profile or {}).get("report_style") or "")
+    limit = STYLE_LIMITS.get(style)
+    if limit is None:
+        per_segment, cap = (MAX_SUMMARY_POINTS if not model.multi_segment else 3), MAX_SUMMARY_POINTS + 2
+    else:
+        per_segment, cap = (limit if not model.multi_segment else max(2, limit // 2)), limit
     chosen: list[str] = []
     taken: dict[str | None, int] = {}
     for finding in ranked:
         segment = finding.get("segment")
-        if taken.get(segment, 0) >= per_segment or len(chosen) >= MAX_SUMMARY_POINTS + 2:
+        if taken.get(segment, 0) >= per_segment or len(chosen) >= cap:
             continue
         taken[segment] = taken.get(segment, 0) + 1
         prefix = f"{model.segment_label(segment)}: " if model.multi_segment else ""
@@ -163,12 +174,15 @@ async def ai_narrative(llm: LLMClient, model: ReportModel) -> tuple[dict[str, An
     report can state how its words were produced.
     """
     usage = {"tokens_input": 0, "tokens_output": 0, "model": llm.model}
+    from ...services.learning import prompt_block
+
     facts = {
         "report_title": model.title,
         "period": model.period,
         "findings": [{"title": f["title"], "statement": f["statement"]}
                      for f in sorted(model.findings, key=lambda f: -f["importance"])[:24]],
         "data_notes": model.warnings[:8],
+        "organisation_learning_profile": prompt_block(model.learning_profile),
     }  # fmt: skip
     try:
         response = await llm.complete_json(system=NARRATIVE_SYSTEM, user=json.dumps(facts, ensure_ascii=False))

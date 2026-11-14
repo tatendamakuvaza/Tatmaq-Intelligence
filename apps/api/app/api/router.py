@@ -7,7 +7,7 @@ from fastapi import APIRouter
 from .. import __version__
 from ..core.config import Settings
 from ..services.datasets import CONTENT_TYPES
-from .routes import accounts, datasets, files, jobs
+from .routes import accounts, arena, datasets, files, jobs, learning
 
 
 def build_router(settings: Settings) -> APIRouter:
@@ -24,6 +24,7 @@ def build_router(settings: Settings) -> APIRouter:
             "max_upload_mb": settings.max_upload_mb,
             "file_types": sorted(CONTENT_TYPES),
             "ai_enabled": settings.ai_enabled,
+            "ai_provider": settings.ai_provider,
         }
 
     router.include_router(accounts.router)
@@ -31,6 +32,8 @@ def build_router(settings: Settings) -> APIRouter:
         router.include_router(accounts.sign_in_router)
     router.include_router(datasets.router)
     router.include_router(jobs.router)
+    router.include_router(learning.router)
+    router.include_router(arena.router)
     if settings.storage_backend in ("local", "database"):
         router.include_router(files.router)
     return router

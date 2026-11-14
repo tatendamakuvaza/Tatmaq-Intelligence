@@ -51,7 +51,15 @@ Put the dimension the user asks about first. "cost" must be the total cost of th
 quantity when only a unit cost exists."""
 
 
-def planner_user_message(prompt: str, analysis_type: str, columns: list[dict[str, Any]], excluded: list[str]) -> str:
+def planner_user_message(
+    prompt: str,
+    analysis_type: str,
+    columns: list[dict[str, Any]],
+    excluded: list[str],
+    learning_profile: dict[str, Any] | None = None,
+) -> str:
+    from ...services.learning import prompt_block
+
     dictionary = [
         {"name": c["name"], "type": c["kind"], "likely_role": c.get("role") or None,
          "distinct_values": c.get("distinct_count"), "missing": c.get("null_count")}
@@ -62,6 +70,9 @@ def planner_user_message(prompt: str, analysis_type: str, columns: list[dict[str
         f"Requested analysis type: {analysis_type}",
         f"Columns in the dataset:\n{json.dumps(dictionary, ensure_ascii=False)}",
     ]
+    guidance = prompt_block(learning_profile)
+    if guidance:
+        parts.append(guidance)
     if excluded:
         parts.append(f"Do not use these operations (the data cannot support them): {', '.join(excluded)}")
     return "\n\n".join(parts)

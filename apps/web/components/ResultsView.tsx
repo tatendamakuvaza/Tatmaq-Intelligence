@@ -4,6 +4,7 @@ import { ChevronRight, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 import { ChartView } from "@/components/Charts";
+import { FeedbackCard } from "@/components/FeedbackCard";
 import { ReportButtons } from "@/components/ReportButtons";
 import { Alert } from "@/components/ui";
 import { formatInteger, formatValue } from "@/lib/format";
@@ -274,6 +275,8 @@ export function ResultsView({ results }: { results: JobResults }) {
           </table>
         </div>
       </details>
+
+      <FeedbackCard jobId={results.job.id} />
     </div>
   );
 }

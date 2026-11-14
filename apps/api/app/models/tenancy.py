@@ -22,6 +22,7 @@ class Organisation(Base):
     default_currency: Mapped[str] = mapped_column(String(3), default="USD")
     timezone: Mapped[str] = mapped_column(String(64), default="Africa/Harare")
     date_order: Mapped[str] = mapped_column(String(3), default="DMY")
+    learning_profile: Mapped[dict[str, Any]] = mapped_column(default=dict)
     created_at: Mapped[created_timestamp]
 
 

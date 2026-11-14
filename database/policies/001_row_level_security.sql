@@ -181,6 +181,7 @@ GRANT UPDATE (full_name, email, updated_at) ON profiles TO tatmaq_app_user;
 GRANT UPDATE (name) ON workspaces TO tatmaq_app_user;
 GRANT UPDATE (name, source_filename, file_type, status, error_message, updated_at) ON datasets TO tatmaq_app_user;
 GRANT UPDATE (status, cancel_requested_at, completed_at, error_message, updated_at) ON analysis_jobs TO tatmaq_app_user;
+GRANT UPDATE (learning_profile) ON organisations TO tatmaq_app_user;
 
 -- ---------------------------------------------------------------------------
 -- Policies. (DROP + CREATE keeps the file re-runnable.)
@@ -191,6 +192,11 @@ GRANT UPDATE (status, cancel_requested_at, completed_at, error_message, updated_
 DROP POLICY IF EXISTS organisations_member_select ON organisations;
 CREATE POLICY organisations_member_select ON organisations
     FOR SELECT TO tatmaq_app_user USING (is_org_member(id));
+DROP POLICY IF EXISTS organisations_admin_update ON organisations;
+CREATE POLICY organisations_admin_update ON organisations
+    FOR UPDATE TO tatmaq_app_user
+    USING (has_org_role(id, ARRAY['owner', 'admin']))
+    WITH CHECK (has_org_role(id, ARRAY['owner', 'admin']));
 
 -- profiles: your own, plus colleagues in your organisations
 DROP POLICY IF EXISTS profiles_visible_select ON profiles;

@@ -70,7 +70,7 @@ class Settings(BaseSettings):
 
     # --- AI provider (optional) ----------------------------------------------
     # "none" runs the deterministic planner and template narrative: no key needed.
-    ai_provider: Literal["none", "openai_compatible", "anthropic"] = "none"
+    ai_provider: Literal["none", "openai_compatible", "anthropic", "arena"] = "none"
     ai_api_key: str = ""
     ai_model: str = ""
     ai_base_url: str = ""

@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Lock, ShieldCheck } from "lucide-react";
+import { Check, GraduationCap, Lock, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 import { Alert, Loading, PageHeader } from "@/components/ui";
@@ -20,7 +20,7 @@ export default function AgentsPage() {
       <Alert tone={ai.enabled ? "success" : "info"}>
         {ai.enabled ? (
           <>
-            <strong>AI model connected: {ai.model}.</strong> It helps the Chief understand requests and the Report agent word its summary. It never calculates: every figure comes from the Statistical Analysis Agent&apos;s code.
+            <strong>{ai.provider === "arena" ? "Arena AI connected" : "AI model connected"}: {ai.model}.</strong> It helps the Chief understand requests, the Report agent word its summary, and the AI assistant answer questions. It never calculates: every figure comes from the Statistical Analysis Agent&apos;s code.
           </>
         ) : (
           <>
@@ -28,6 +28,22 @@ export default function AgentsPage() {
           </>
         )}
       </Alert>
+
+      <section className="card card-pad">
+        <div className="row" style={{ alignItems: "flex-start" }}>
+          <div className="stat-icon" style={{ marginBottom: 0 }}><GraduationCap size={19} /></div>
+          <div className="grow">
+            <h2>The agents learn your business</h2>
+            <p className="small muted" style={{ marginTop: 4 }}>
+              Your business context, glossary, analysis preferences and lessons from feedback are applied when the Chief plans an analysis and the Report agent writes its summary. Guidance never changes a calculated figure.
+            </p>
+          </div>
+          <div className="row">
+            <Link href="/settings" className="btn btn-secondary btn-sm">Teach the agents</Link>
+            <Link href="/assistant" className="btn btn-primary btn-sm"><Sparkles size={14} /> Ask the assistant</Link>
+          </div>
+        </div>
+      </section>
 
       <div className="grid grid-2">
         {agents.map((agent) => (

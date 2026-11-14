@@ -41,6 +41,11 @@ Statistical Analysis calculates; Quality Verification reconciles; Report Generat
 - **Incomplete months** (an export taken mid-month) are excluded from month comparisons and trends.
 - **Trends** are only called upward or downward when statistically significant at the 5% level.
 - **Unusual values** are flagged for review and never described as errors or wrongdoing.
+- **Learning profile.** The Chief's planning prompt and the Report agent's summary prompt include
+  the organisation's learning profile (business context, glossary, preferences, report style and
+  recent lessons from feedback) as guidance only, and the template summary's length follows the
+  report style. No agent uses it to calculate; the planner's validation and the narrative grounding
+  checks are unchanged. Owners and admins maintain it on *Settings → Agent learning*.
 
 ## Adding an analysis
 

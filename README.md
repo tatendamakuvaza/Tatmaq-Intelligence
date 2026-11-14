@@ -134,7 +134,22 @@ app's public settings are in [`apps/web/.env.example`](apps/web/.env.example). U
 
 To connect an AI model, set `AI_PROVIDER`, `AI_API_KEY` and `AI_MODEL`. `openai_compatible` works
 with any provider that offers an OpenAI-style API (set `AI_BASE_URL`); `anthropic` uses Anthropic's
-API.
+API; `arena` uses [Arena AI](https://platform.arena.ai)'s OpenAI-compatible gateway
+(`https://api.arena.ai/v1`): create a key under *Dashboard → Keys*, enable the model in that
+workspace, and set for example `AI_MODEL=coding-router-preview`.
+
+**Agent learning.** Owners and admins teach the agents on *Settings → Agent learning*: business
+context, a glossary, analysis preferences, a report style, and short lessons captured from the
+feedback buttons on each analysis. The profile is stored per organisation
+(`organisations.learning_profile`, migration `0004`), reaches the Chief's planning prompt and the
+Report agent's summary prompt, and chooses the length of the template summary. It is guidance only:
+the Statistical Analysis Agent's code and the reconciliation checks remain the only source of
+figures.
+
+**AI assistant.** The *AI assistant* page answers a question two ways at once: the TATMAQ agents
+quote the verified findings of a completed analysis you attach, and the connected model (Arena AI or
+any other provider) adds interpretation and broader context. Without a model the page still shows
+the verified answer; without an attached analysis the model gives general guidance only and says so.
 
 ## Deployment
 

@@ -61,7 +61,8 @@ class WorkflowNodes:
         outcome = await run_task(
             ctx, sequence=1, agent_key="chief_intelligence", action="plan_analysis",
             inputs={"columns": ctx.dataset.profile.get("columns_detail", []), "analysis_type": ctx.analysis_type,
-                    "excluded_operations": sorted(state.get("excluded_operations", []))},
+                    "excluded_operations": sorted(state.get("excluded_operations", [])),
+                    "learning_profile": ctx.organisation.get("learning_profile") or {}},
         )  # fmt: skip
         if not outcome.ok:
             return failed(state, "planning", outcome.error)
@@ -207,6 +208,7 @@ class WorkflowNodes:
                 "findings": [{**finding, "approved": True} for finding in statistical["findings"]],
                 "evidence": statistical["evidence"], "warnings": warnings, "assumptions": assumptions,
                 "verification": {"passed": verification["passed"], "checks": verification["checks"]},
+                "learning_profile": ctx.organisation.get("learning_profile") or {},
             },
             dataset_refs={"report_paths": {ext: report_key(ctx.organisation_id, ctx.job_id, ext)
                                            for ext in ("pdf", "xlsx", "html")}},

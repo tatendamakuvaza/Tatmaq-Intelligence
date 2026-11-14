@@ -11,7 +11,7 @@ const POINTS = [
   { icon: ShieldCheck, text: "Results are reconciled before they are reported, and each one shows the formula and rows behind it." },
 ];
 
-// Sign-in, sign-up and first-run screens share one centred column: the blue band with the
+// Sign-in, sign-up and first-run screens share one centred column: the navy band with the
 // brand and the promise, the form in a card across the band's lower edge, then the reasons.
 export function AuthScreen({ children }: { children: ReactNode }) {
   return (
@@ -19,7 +19,7 @@ export function AuthScreen({ children }: { children: ReactNode }) {
       <header className="auth-hero">
         <Brand size={36} />
         <p className="auth-headline">Your AI analytics department</p>
-        <p className="tagline">One platform. Five collaborating agents. Verified answers from your own business data.</p>
+        <p className="tagline">One platform. Five collaborating agents. Verified answers and board-ready reports from your own business data.</p>
       </header>
       <main className="auth-card">{children}</main>
       <section className="auth-points" aria-label="Why TATMAQ Intelligence">

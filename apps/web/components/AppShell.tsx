@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Bot, Database, FileText, LayoutDashboard, LogOut, Menu, Settings, X } from "lucide-react";
+import { BarChart3, Bot, Database, FileText, LayoutDashboard, LogOut, Menu, Settings, Sparkles, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
@@ -11,6 +11,7 @@ import { useSession } from "@/services/session";
 const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/analyst", label: "Analyst", icon: BarChart3 },
+  { href: "/assistant", label: "AI assistant", icon: Sparkles },
   { href: "/datasets", label: "Datasets", icon: Database },
   { href: "/reports", label: "Reports", icon: FileText },
   { href: "/agents", label: "Agents", icon: Bot },

@@ -12,6 +12,8 @@ that act inside an organisation also need `X-Organisation-Id`. Errors always hav
 | POST | `/auth/profile` | Create or update the caller's profile (safe to repeat) |
 | GET, POST | `/organisations` | List the caller's organisations; create one (with a first workspace) |
 | GET | `/organisations/members` | People in the organisation |
+| GET, PUT | `/organisations/learning-profile` | Read the agents' learning profile; owners/admins save it |
+| POST | `/organisations/learning-profile/lessons` | Owners/admins add a short lesson (the newest 24 are kept) |
 | GET, POST | `/workspaces` | List, create |
 | GET | `/datasets` | List (optional `workspace_id`) |
 | POST | `/datasets/upload-url` | Upload step 1: register the dataset, get a one-off upload link |
@@ -24,10 +26,12 @@ that act inside an organisation also need `X-Organisation-Id`. Errors always hav
 | GET | `/analysis-jobs/{id}/agents` | Each agent's progress, summary and warnings |
 | GET | `/analysis-jobs/{id}/results` | Verified findings with evidence, figures, charts, tables, reports |
 | POST | `/analysis-jobs/{id}/cancel` | Cancel a queued or running analysis |
+| POST | `/analysis-jobs/{id}/feedback` | Rate an analysis (`helpful` / `not_helpful`); an optional lesson is saved for owners/admins |
 | GET | `/reports` | List report files |
 | GET | `/reports/{id}/download` | A short-lived download link (recorded in the audit log) |
 | GET | `/usage` | This month's usage and the plan's limits |
 | GET | `/agents` | The agent team and recent agent activity |
+| POST | `/arena/ask` | Ask the AI assistant; optionally ground it in one completed analysis (`job_id`). Needs `analysis:run`; `409 ai_not_configured` when no model is connected |
 
 Built-in sign-in only (`AUTH_MODE=builtin` or `dev`):
 

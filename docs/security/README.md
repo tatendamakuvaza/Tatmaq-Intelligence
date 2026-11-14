@@ -99,6 +99,14 @@ schema's marker first, so passwords can never land in a real Supabase `auth.user
   specification and fit the dataset, or the built-in planner is used.
 - A drafted summary is discarded if it contains a figure that is not in the verified results, or an
   allegation of dishonesty.
+- The optional AI assistant (`POST /arena/ask`, Arena AI or any connected model) receives the
+  question, the organisation's learning profile and, when one is attached, the verified summary and
+  findings of a single completed analysis — never raw rows. Its answer is labelled as interpretation;
+  company figures come from the verified analysis. It needs `analysis:run` and the same tenant checks
+  as every other endpoint.
+- The learning profile is guidance only. Only owners/admins may change it (an owner/admin `UPDATE`
+  policy plus a column-level `UPDATE` grant on `organisations.learning_profile`), and every change is
+  audited. It cannot alter calculations, validation or Row Level Security.
 
 ## Reports
 

@@ -45,7 +45,13 @@ class ChiefIntelligenceAgent(BaseAgent):
             try:
                 response = await llm.complete_json(
                     system=PLANNER_SYSTEM,
-                    user=planner_user_message(task.user_instruction, analysis_type, profile_columns, sorted(excluded)),
+                    user=planner_user_message(
+                        task.user_instruction,
+                        analysis_type,
+                        profile_columns,
+                        sorted(excluded),
+                        learning_profile=task.inputs.get("learning_profile") or {},
+                    ),
                 )
                 tokens_in, tokens_out, model_name = response.tokens_input, response.tokens_output, response.model
                 spec = AnalysisSpec.model_validate(response.data)

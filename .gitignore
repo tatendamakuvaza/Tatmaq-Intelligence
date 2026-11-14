@@ -18,6 +18,7 @@ dist/
 # Node / Next.js
 node_modules/
 .next/
+.netlify/
 out/
 *.tsbuildinfo
 # written by Next.js on every dev, build and typegen run

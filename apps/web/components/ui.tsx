@@ -61,7 +61,7 @@ export function Loading({ label = "Loading" }: { label?: string }) {
 
 type PageHeaderProps = { title: string; children?: ReactNode; actions?: ReactNode; back?: { href: string; label: string } };
 
-// The blue band at the top of every page. The block that follows it sits across its lower edge.
+// The light header band at the top of every page: title, one-line description and actions.
 export function PageHeader({ title, children, actions, back }: PageHeaderProps) {
   return (
     <header className="page-header">

@@ -42,6 +42,7 @@ class ReportModel:
     summary: list[str] = field(default_factory=list)
     next_steps: list[str] = field(default_factory=list)
     narrative_source: str = "Written from the verified findings using fixed templates."
+    learning_profile: dict[str, Any] = field(default_factory=dict)
 
     @property
     def multi_segment(self) -> bool:
@@ -118,6 +119,7 @@ def build_model(inputs: dict[str, Any]) -> ReportModel:
         warnings=list(dict.fromkeys(inputs.get("warnings", []))),
         assumptions=list(dict.fromkeys(inputs.get("assumptions", []))),
         verification=inputs.get("verification") or {"passed": True, "checks": []},
+        learning_profile=inputs.get("learning_profile") or {},
     )
 
 

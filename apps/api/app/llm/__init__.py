@@ -2,11 +2,13 @@
 
 from ..core.config import Settings
 from .anthropic import AnthropicClient
+from .arena import ArenaClient
 from .base import LLMClient, LLMError, LLMResponse, LLMTemporaryError, parse_json_object
 from .openai_compatible import OpenAICompatibleClient
 
 __all__ = [
     "AnthropicClient",
+    "ArenaClient",
     "LLMClient",
     "LLMError",
     "LLMResponse",
@@ -25,6 +27,8 @@ def build_llm(settings: Settings) -> LLMClient | None:
     }  # fmt: skip
     if settings.ai_provider == "openai_compatible":
         return OpenAICompatibleClient(**common)
+    if settings.ai_provider == "arena":
+        return ArenaClient(**common)
     if settings.ai_provider == "anthropic":
         return AnthropicClient(**common)
     return None

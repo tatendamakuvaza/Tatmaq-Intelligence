@@ -287,10 +287,16 @@ CREATE TABLE public.organisations (
     default_currency character varying(3) DEFAULT 'USD'::character varying NOT NULL,
     timezone character varying(64) DEFAULT 'Africa/Harare'::character varying NOT NULL,
     date_order character varying(3) DEFAULT 'DMY'::character varying NOT NULL,
+    learning_profile jsonb DEFAULT '{}'::jsonb NOT NULL,
     CONSTRAINT organisations_date_order_check CHECK (((date_order)::text = ANY ((ARRAY['DMY'::character varying, 'MDY'::character varying])::text[]))),
+    CONSTRAINT organisations_learning_profile_object CHECK ((jsonb_typeof(learning_profile) = 'object'::text)),
     CONSTRAINT organisations_slug_format CHECK (((slug)::text ~ '^[a-z0-9]+(-[a-z0-9]+)*$'::text)),
     CONSTRAINT organisations_status_check CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'suspended'::character varying, 'closed'::character varying])::text[])))
 );
+--
+-- Name: COLUMN organisations.learning_profile; Type: COMMENT; Schema: public; Owner: -
+--
+COMMENT ON COLUMN public.organisations.learning_profile IS 'Owner/admin-maintained guidance for agents: business context, glossary, analysis preferences, report style and lessons from feedback. Read by planning and narrative prompts; never used to calculate figures.';
 --
 -- Name: profiles; Type: TABLE; Schema: public; Owner: -
 --
@@ -910,6 +916,10 @@ ALTER TABLE public.organisation_memberships ENABLE ROW LEVEL SECURITY;
 -- Name: organisations; Type: ROW SECURITY; Schema: public; Owner: -
 --
 ALTER TABLE public.organisations ENABLE ROW LEVEL SECURITY;
+--
+-- Name: organisations organisations_admin_update; Type: POLICY; Schema: public; Owner: -
+--
+CREATE POLICY organisations_admin_update ON public.organisations FOR UPDATE TO tatmaq_app_user USING (public.has_org_role(id, ARRAY['owner'::text, 'admin'::text])) WITH CHECK (public.has_org_role(id, ARRAY['owner'::text, 'admin'::text]));
 --
 -- Name: organisations organisations_member_select; Type: POLICY; Schema: public; Owner: -
 --

@@ -125,7 +125,8 @@ class JobContext:
                 assert_belongs_to(path, self.organisation_id)
 
             self.organisation = {"name": organisation.name, "currency": organisation.default_currency,
-                                 "timezone": organisation.timezone, "date_order": organisation.date_order}  # fmt: skip
+                                 "timezone": organisation.timezone, "date_order": organisation.date_order,
+                                 "learning_profile": organisation.learning_profile or {}}  # fmt: skip
             self.dataset = DatasetInfo(
                 dataset_id=dataset.id, name=dataset.name, filename=dataset.source_filename,
                 file_type=dataset.file_type or "", version_id=version.id, version_number=version.version_number,

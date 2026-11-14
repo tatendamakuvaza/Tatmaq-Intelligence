@@ -289,4 +289,30 @@ export type ClientConfig = {
   max_upload_mb: number;
   file_types: string[];
   ai_enabled: boolean;
+  ai_provider: "none" | "openai_compatible" | "anthropic" | "arena";
 };
+
+export type ReportStyle = "executive" | "balanced" | "detailed";
+
+// Durable guidance the agents read when planning and wording reports. It never
+// takes part in calculations: verified figures always come from the agents' code.
+export type LearningProfile = {
+  business_context: string;
+  glossary: string;
+  analysis_preferences: string;
+  report_style: ReportStyle;
+  lessons: string[];
+  updated_at: string | null;
+};
+
+export type ArenaAnswer = {
+  answer: string;
+  caveats: string[];
+  provider: string;
+  model: string | null;
+  used_job_id: string | null;
+  tokens_input: number;
+  tokens_output: number;
+};
+
+export type JobFeedback = { recorded: boolean; lesson_saved: boolean };

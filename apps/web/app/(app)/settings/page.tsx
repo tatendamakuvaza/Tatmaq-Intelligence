@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 
+import { LearningSettings } from "@/components/LearningSettings";
 import { Alert, Loading, PageHeader } from "@/components/ui";
 import { useApi } from "@/hooks/useApi";
 import { AUTH_MODE } from "@/lib/config";
@@ -158,7 +159,7 @@ export default function SettingsPage() {
 
   return (
     <>
-      <PageHeader title="Settings">Your profile, your organisation and this month&apos;s usage.</PageHeader>
+      <PageHeader title="Settings">Your profile, your organisation, agent learning and this month&apos;s usage.</PageHeader>
       <div className="grid grid-2">
         <form className="card card-pad stack" onSubmit={submit}>
           <h2>Your profile</h2>
@@ -202,6 +203,8 @@ export default function SettingsPage() {
           </table>
         </section>
       </div>
+
+      <LearningSettings />
 
       {passwordCard ? (
         <>

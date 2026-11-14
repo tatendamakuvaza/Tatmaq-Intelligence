@@ -10,7 +10,8 @@ from fastapi import APIRouter, Header, Query, Response
 from ...agents.base.registry import AGENTS
 from ...models import JobStatus
 from ...schemas.jobs import AgentActivity, DownloadLink, JobAccepted, JobOut, JobRequest, JobResults, ReportOut
-from ...services import audit, jobs, usage
+from ...schemas.learning import JobFeedbackIn
+from ...services import audit, jobs, learning, usage
 from ..deps import AppSettings, Db, FileStorage, Tenant
 
 router = APIRouter(tags=["analysis"])
@@ -67,6 +68,28 @@ def get_agent_activity(job_id: UUID, ctx: Tenant, db: Db) -> AgentActivity:
 @router.post("/analysis-jobs/{job_id}/cancel", response_model=JobOut)
 def cancel_job(job_id: UUID, ctx: Tenant, db: Db) -> JobOut:
     return jobs.cancel(db, ctx, job_id)
+
+
+@router.post("/analysis-jobs/{job_id}/feedback", tags=["analysis"])
+def submit_feedback(job_id: UUID, body: JobFeedbackIn, ctx: Tenant, db: Db) -> dict:
+    """Record executive feedback on a completed analysis. A lesson is saved only for owners/admins."""
+    job = jobs.get(db, ctx, job_id)
+    audit.record(
+        db,
+        organisation_id=ctx.organisation_id,
+        actor_id=ctx.user.id,
+        action="analysis.feedback",
+        resource_type="analysis_job",
+        resource_id=job.id,
+        details={"rating": body.rating},
+    )
+    lesson_saved = False
+    if body.lesson and ctx.can("organisation:manage"):
+        learning.add_lesson(db, ctx, body.lesson, source=f"analysis {job.id}")
+        lesson_saved = True
+    else:
+        db.commit()
+    return {"recorded": True, "lesson_saved": lesson_saved}
 
 
 @router.get("/reports", response_model=list[ReportOut], tags=["reports"])

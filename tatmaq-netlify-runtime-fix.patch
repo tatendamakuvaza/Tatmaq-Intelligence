@@ -1,0 +1,72 @@
+diff --git a/apps/web/package-lock.json b/apps/web/package-lock.json
+index 7190ec0..1c7413c 100644
+--- a/apps/web/package-lock.json
++++ b/apps/web/package-lock.json
+@@ -17,6 +17,7 @@
+         "zod": "4.6.7"
+       },
+       "devDependencies": {
++        "@netlify/plugin-nextjs": "5.16.7",
+         "@types/node": "^20.17.0",
+         "@types/react": "19.3.0",
+         "@types/react-dom": "^19.3.0",
+@@ -25,7 +26,7 @@
+         "typescript": "^5.9.0"
+       },
+       "engines": {
+-        "node": ">=20.9.0"
++        "node": ">=22.0.0"
+       }
+     },
+     "node_modules/@babel/code-frame": {
+@@ -1039,6 +1040,16 @@
+         "@jridgewell/sourcemap-codec": "^1.4.14"
+       }
+     },
++    "node_modules/@netlify/plugin-nextjs": {
++      "version": "5.16.7",
++      "resolved": "https://registry.npmjs.org/@netlify/plugin-nextjs/-/plugin-nextjs-5.16.7.tgz",
++      "integrity": "sha512-3cP/P2rx5yIGWsFegfgWH03HjZi8gTwk9MkX1jwuyLfNm5hEF1AV1Pk0OO4SzFK6/UqcuZyXG/7MXh1anIJCgQ==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=18.0.0"
++      }
++    },
+     "node_modules/@next/env": {
+       "version": "16.4.6",
+       "resolved": "https://registry.npmjs.org/@next/env/-/env-16.4.6.tgz",
+diff --git a/apps/web/package.json b/apps/web/package.json
+index b602209..43f3774 100644
+--- a/apps/web/package.json
++++ b/apps/web/package.json
+@@ -19,6 +19,7 @@
+     "zod": "4.6.7"
+   },
+   "devDependencies": {
++    "@netlify/plugin-nextjs": "5.16.7",
+     "@types/node": "^20.17.0",
+     "@types/react": "19.3.0",
+     "@types/react-dom": "^19.3.0",
+diff --git a/netlify.toml b/netlify.toml
+index cf8347d..88a3536 100644
+--- a/netlify.toml
++++ b/netlify.toml
+@@ -7,9 +7,16 @@
+ 
+ [build]
+   base = "apps/web"
+-  command = "npm run build"
++  command = "npm ci && npm run build"
++  # The Next.js runtime below transforms this build directory into deployable
++  # pages, assets and server functions. Do not publish .next without the runtime.
+   publish = ".next"
+ 
+ [build.environment]
+   NODE_VERSION = "22"
+   NEXT_TELEMETRY_DISABLED = "1"
++
++# Explicitly enable the Next.js runtime for this monorepo. Without it, Netlify
++# can publish raw .next build files, leaving / and /login returning 404.
++[[plugins]]
++  package = "@netlify/plugin-nextjs"

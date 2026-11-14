@@ -7,9 +7,16 @@
 
 [build]
   base = "apps/web"
-  command = "npm run build"
+  command = "npm ci && npm run build"
+  # The Next.js runtime below transforms this build directory into deployable
+  # pages, assets and server functions. Do not publish .next without the runtime.
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "22"
   NEXT_TELEMETRY_DISABLED = "1"
+
+# Explicitly enable the Next.js runtime for this monorepo. Without it, Netlify
+# can publish raw .next build files, leaving / and /login returning 404.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

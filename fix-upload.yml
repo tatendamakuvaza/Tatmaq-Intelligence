@@ -1,0 +1,29 @@
+name: Put the uploaded files in the right place
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Move the application into place
+        run: |
+          set -euo pipefail
+          if [ ! -f tatmaq-missing-files.zip ]; then echo "Nothing to do."; exit 0; fi
+          mkdir -p "$RUNNER_TEMP/missing"
+          unzip -q tatmaq-missing-files.zip -d "$RUNNER_TEMP/missing"
+          for part in "$RUNNER_TEMP"/missing/tatmaq-missing-files/upload-*; do cp -a "$part/apps" .; done
+          git rm -r -q --ignore-unmatch upload-1 upload-2 upload-3 tatmaq-missing-files tatmaq-missing-files.zip READ-ME-FIRST.txt
+          rm -rf upload-1 upload-2 upload-3 tatmaq-missing-files
+          git add apps
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "Put the application files in the right place"
+          git push

@@ -1,0 +1,382 @@
+{
+  "$defs": {
+    "Correlation": {
+      "additionalProperties": false,
+      "properties": {
+        "columns": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 2,
+          "title": "Columns",
+          "type": "array"
+        },
+        "method": {
+          "default": "pearson",
+          "enum": [
+            "pearson",
+            "spearman"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "type": {
+          "const": "correlation",
+          "default": "correlation",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "columns"
+      ],
+      "title": "Correlation",
+      "type": "object"
+    },
+    "DataQuality": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "data_quality",
+          "default": "data_quality",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "DataQuality",
+      "type": "object"
+    },
+    "DescriptiveStatistics": {
+      "additionalProperties": false,
+      "properties": {
+        "columns": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Columns",
+          "type": "array"
+        },
+        "type": {
+          "const": "descriptive_statistics",
+          "default": "descriptive_statistics",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "columns"
+      ],
+      "title": "DescriptiveStatistics",
+      "type": "object"
+    },
+    "Measure": {
+      "additionalProperties": false,
+      "description": "An amount per row: one column, or the product of two (quantity x unit price).",
+      "properties": {
+        "column": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Column"
+        },
+        "multiply": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Multiply"
+        }
+      },
+      "title": "Measure",
+      "type": "object"
+    },
+    "Outliers": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "title": "Column",
+          "type": "string"
+        },
+        "type": {
+          "const": "outliers",
+          "default": "outliers",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "column"
+      ],
+      "title": "Outliers",
+      "type": "object"
+    },
+    "Profitability": {
+      "additionalProperties": false,
+      "properties": {
+        "cost": {
+          "$ref": "#/$defs/Measure"
+        },
+        "date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date"
+        },
+        "dimensions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4,
+          "title": "Dimensions",
+          "type": "array"
+        },
+        "revenue": {
+          "$ref": "#/$defs/Measure"
+        },
+        "type": {
+          "const": "profitability",
+          "default": "profitability",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "revenue",
+        "cost"
+      ],
+      "title": "Profitability",
+      "type": "object"
+    },
+    "Regression": {
+      "additionalProperties": false,
+      "properties": {
+        "predictors": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Predictors",
+          "type": "array"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "type": {
+          "const": "regression",
+          "default": "regression",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "predictors"
+      ],
+      "title": "Regression",
+      "type": "object"
+    },
+    "SalesOverview": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date"
+        },
+        "dimensions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4,
+          "title": "Dimensions",
+          "type": "array"
+        },
+        "document": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Document"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity"
+        },
+        "revenue": {
+          "$ref": "#/$defs/Measure"
+        },
+        "type": {
+          "const": "sales_overview",
+          "default": "sales_overview",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "revenue"
+      ],
+      "title": "SalesOverview",
+      "type": "object"
+    },
+    "Trend": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        },
+        "measure": {
+          "title": "Measure",
+          "type": "string"
+        },
+        "type": {
+          "const": "trend",
+          "default": "trend",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "measure",
+        "date"
+      ],
+      "title": "Trend",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "currency_column": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Currency Column"
+    },
+    "objective": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Objective",
+      "type": "string"
+    },
+    "operations": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "correlation": "#/$defs/Correlation",
+            "data_quality": "#/$defs/DataQuality",
+            "descriptive_statistics": "#/$defs/DescriptiveStatistics",
+            "outliers": "#/$defs/Outliers",
+            "profitability": "#/$defs/Profitability",
+            "regression": "#/$defs/Regression",
+            "sales_overview": "#/$defs/SalesOverview",
+            "trend": "#/$defs/Trend"
+          },
+          "propertyName": "type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/SalesOverview"
+          },
+          {
+            "$ref": "#/$defs/Profitability"
+          },
+          {
+            "$ref": "#/$defs/DescriptiveStatistics"
+          },
+          {
+            "$ref": "#/$defs/Correlation"
+          },
+          {
+            "$ref": "#/$defs/Regression"
+          },
+          {
+            "$ref": "#/$defs/Trend"
+          },
+          {
+            "$ref": "#/$defs/Outliers"
+          },
+          {
+            "$ref": "#/$defs/DataQuality"
+          }
+        ]
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Operations",
+      "type": "array"
+    },
+    "report_title": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Report Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "objective",
+    "report_title",
+    "operations"
+  ],
+  "title": "AnalysisSpec",
+  "type": "object"
+}

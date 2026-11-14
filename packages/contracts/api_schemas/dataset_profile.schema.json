@@ -1,0 +1,207 @@
+{
+  "$defs": {
+    "ColumnOut": {
+      "properties": {
+        "data_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data Type"
+        },
+        "details": {
+          "additionalProperties": true,
+          "title": "Details",
+          "type": "object"
+        },
+        "distinct_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Distinct Count"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "null_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Null Count"
+        },
+        "position": {
+          "title": "Position",
+          "type": "integer"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Role"
+        }
+      },
+      "required": [
+        "name",
+        "position",
+        "data_type",
+        "role",
+        "null_count",
+        "distinct_count",
+        "details"
+      ],
+      "title": "ColumnOut",
+      "type": "object"
+    },
+    "VersionOut": {
+      "properties": {
+        "column_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Column Count"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "error_message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Error Message"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "row_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Row Count"
+        },
+        "sha256_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sha256 Hash"
+        },
+        "size_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Size Bytes"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "version_number": {
+          "title": "Version Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "version_number",
+        "status",
+        "row_count",
+        "column_count",
+        "size_bytes",
+        "sha256_hash",
+        "error_message",
+        "created_at"
+      ],
+      "title": "VersionOut",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "cleaning": {
+      "additionalProperties": true,
+      "title": "Cleaning",
+      "type": "object"
+    },
+    "columns": {
+      "items": {
+        "$ref": "#/$defs/ColumnOut"
+      },
+      "title": "Columns",
+      "type": "array"
+    },
+    "dataset_id": {
+      "format": "uuid",
+      "title": "Dataset Id",
+      "type": "string"
+    },
+    "dataset_name": {
+      "title": "Dataset Name",
+      "type": "string"
+    },
+    "profile": {
+      "additionalProperties": true,
+      "title": "Profile",
+      "type": "object"
+    },
+    "version": {
+      "$ref": "#/$defs/VersionOut"
+    }
+  },
+  "required": [
+    "dataset_id",
+    "dataset_name",
+    "version",
+    "profile",
+    "columns",
+    "cleaning"
+  ],
+  "title": "DatasetProfile",
+  "type": "object"
+}

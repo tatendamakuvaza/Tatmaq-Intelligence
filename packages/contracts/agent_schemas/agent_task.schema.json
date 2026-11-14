@@ -1,0 +1,115 @@
+{
+  "$defs": {
+    "ExecutionLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "max_columns": {
+          "title": "Max Columns",
+          "type": "integer"
+        },
+        "max_file_bytes": {
+          "title": "Max File Bytes",
+          "type": "integer"
+        },
+        "max_rows": {
+          "title": "Max Rows",
+          "type": "integer"
+        },
+        "timeout_seconds": {
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max_rows",
+        "max_columns",
+        "max_file_bytes",
+        "timeout_seconds"
+      ],
+      "title": "ExecutionLimits",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What an agent is asked to do, and the limits it must do it within.",
+  "properties": {
+    "action": {
+      "title": "Action",
+      "type": "string"
+    },
+    "agent_key": {
+      "enum": [
+        "chief_intelligence",
+        "data_acquisition",
+        "data_cleaning",
+        "statistical_analysis",
+        "report_generation"
+      ],
+      "title": "Agent Key",
+      "type": "string"
+    },
+    "dataset_refs": {
+      "additionalProperties": true,
+      "title": "Dataset Refs",
+      "type": "object"
+    },
+    "dataset_version_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Dataset Version Id"
+    },
+    "inputs": {
+      "additionalProperties": true,
+      "title": "Inputs",
+      "type": "object"
+    },
+    "job_id": {
+      "format": "uuid",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "limits": {
+      "$ref": "#/$defs/ExecutionLimits"
+    },
+    "organisation_id": {
+      "format": "uuid",
+      "title": "Organisation Id",
+      "type": "string"
+    },
+    "output_format": {
+      "default": "AgentResult/v1",
+      "title": "Output Format",
+      "type": "string"
+    },
+    "permitted_tools": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Permitted Tools",
+      "type": "array"
+    },
+    "user_instruction": {
+      "title": "User Instruction",
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "organisation_id",
+    "agent_key",
+    "action",
+    "user_instruction",
+    "limits"
+  ],
+  "title": "AgentTask",
+  "type": "object"
+}

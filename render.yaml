@@ -1,0 +1,40 @@
+# Render Blueprint: the API and the analysis worker together in one free web service.
+#
+# In Render choose New > Blueprint and pick this repository. Render asks for the two values
+# marked "sync: false" and creates everything else from this file. The full walkthrough,
+# and what the free plan can and cannot do, is in infrastructure/deployment/README.md.
+
+services:
+  - type: web
+    name: tatmaq-api
+    runtime: docker
+    plan: free # without this line Render chooses a paid plan
+    region: frankfurt
+    dockerfilePath: ./infrastructure/docker/api.Dockerfile
+    dockerContext: .
+    dockerCommand: /srv/infrastructure/docker/start-all.sh
+    healthCheckPath: /healthz
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_SECRET_KEY
+        generateValue: true # Render makes a random value; keep it secret and do not change it
+      - key: DATABASE_URL
+        sync: false # the PostgreSQL address, for example the "Service URI" from Aiven
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false # the web app's address, for example https://your-site.netlify.app (no trailing slash)
+      - key: AUTH_MODE
+        value: builtin
+      - key: STORAGE_BACKEND
+        value: database
+      # A small database allows few connections (Aiven's free plan: 20 in all).
+      - key: DB_POOL_SIZE
+        value: 3
+      - key: DB_MAX_OVERFLOW
+        value: 2
+      # Sized for 512 MB of memory. Measured: 50,000 rows of a nine-column file completes;
+      # raise these two only on a larger instance.
+      - key: MAX_UPLOAD_MB
+        value: 5
+      - key: MAX_ANALYSIS_ROWS
+        value: 50000

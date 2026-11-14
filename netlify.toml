@@ -1,0 +1,15 @@
+# Netlify builds and serves the web app (apps/web). The API, the worker and the database
+# run elsewhere: see infrastructure/deployment/README.md.
+#
+# The one setting Netlify still needs from you is an environment variable, added in the
+# Netlify dashboard before the first deploy:
+#   NEXT_PUBLIC_API_BASE_URL = the address of the API, for example https://tatmaq-api.onrender.com
+
+[build]
+  base = "apps/web"
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"

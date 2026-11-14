@@ -1,0 +1,61 @@
+{
+  "$defs": {
+    "UploadInstructions": {
+      "properties": {
+        "headers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Headers",
+          "type": "object"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "method",
+        "url",
+        "headers"
+      ],
+      "title": "UploadInstructions",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "dataset_id": {
+      "format": "uuid",
+      "title": "Dataset Id",
+      "type": "string"
+    },
+    "expires_in": {
+      "title": "Expires In",
+      "type": "integer"
+    },
+    "max_bytes": {
+      "title": "Max Bytes",
+      "type": "integer"
+    },
+    "upload": {
+      "$ref": "#/$defs/UploadInstructions"
+    },
+    "version_number": {
+      "title": "Version Number",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "dataset_id",
+    "version_number",
+    "upload",
+    "max_bytes",
+    "expires_in"
+  ],
+  "title": "UploadResponse",
+  "type": "object"
+}

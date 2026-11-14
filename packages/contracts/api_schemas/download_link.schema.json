@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "content_type": {
+      "title": "Content Type",
+      "type": "string"
+    },
+    "expires_in": {
+      "title": "Expires In",
+      "type": "integer"
+    },
+    "filename": {
+      "title": "Filename",
+      "type": "string"
+    },
+    "url": {
+      "title": "Url",
+      "type": "string"
+    }
+  },
+  "required": [
+    "url",
+    "filename",
+    "content_type",
+    "expires_in"
+  ],
+  "title": "DownloadLink",
+  "type": "object"
+}

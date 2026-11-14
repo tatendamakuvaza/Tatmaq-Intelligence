@@ -1,0 +1,12 @@
+# Line endings: every text file is stored and checked out with LF, on every operating
+# system. Shell scripts and Docker builds then behave the same on Windows as on Linux,
+# and Git on Windows does not warn about converting each file.
+* text=auto eol=lf
+
+# Never converted.
+*.xlsx binary
+*.woff2 binary
+
+# The benchmark CSV uses CRLF line endings (the CSV standard, and what Excel exports).
+# Keep its bytes exactly as generated.
+apps/api/tests/benchmark/sales_benchmark.csv -text

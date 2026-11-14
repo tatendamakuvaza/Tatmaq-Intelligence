@@ -1,0 +1,39 @@
+{
+  "properties": {
+    "analysis_type": {
+      "default": "automatic",
+      "enum": [
+        "automatic",
+        "sales",
+        "profitability",
+        "statistical",
+        "data_quality"
+      ],
+      "title": "Analysis Type",
+      "type": "string"
+    },
+    "dataset_version_id": {
+      "format": "uuid",
+      "title": "Dataset Version Id",
+      "type": "string"
+    },
+    "prompt": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Prompt",
+      "type": "string"
+    },
+    "workspace_id": {
+      "format": "uuid",
+      "title": "Workspace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workspace_id",
+    "dataset_version_id",
+    "prompt"
+  ],
+  "title": "JobRequest",
+  "type": "object"
+}

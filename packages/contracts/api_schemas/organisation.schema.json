@@ -1,0 +1,52 @@
+{
+  "properties": {
+    "date_order": {
+      "title": "Date Order",
+      "type": "string"
+    },
+    "default_currency": {
+      "title": "Default Currency",
+      "type": "string"
+    },
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "permissions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Permissions",
+      "type": "array"
+    },
+    "role": {
+      "title": "Role",
+      "type": "string"
+    },
+    "slug": {
+      "title": "Slug",
+      "type": "string"
+    },
+    "timezone": {
+      "title": "Timezone",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "slug",
+    "role",
+    "permissions",
+    "default_currency",
+    "timezone",
+    "date_order"
+  ],
+  "title": "OrganisationOut",
+  "type": "object"
+}

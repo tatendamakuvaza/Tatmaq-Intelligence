@@ -1,0 +1,20 @@
+# Lint and format settings for all Python in the repository:  ruff check . && ruff format .
+line-length = 120
+target-version = "py312"
+extend-exclude = ["apps/web"]
+
+[lint]
+select = ["E", "F", "I", "B", "UP", "C4", "SIM", "RUF"]
+ignore = [
+    "E501",    # line length is the formatter's job; a few tables are deliberately kept on one line
+    "RUF001",  # typographic characters in customer-facing text are intentional
+    "RUF012",  # SQLAlchemy and pydantic use mutable class attributes by design
+    "SIM108",  # a ternary is not always clearer
+]
+
+[lint.isort]
+known-first-party = ["app", "analytics_core", "conftest"]
+
+[lint.per-file-ignores]
+"apps/api/tests/*" = ["E402", "E731"]
+"packages/analytics-core/tests/*" = ["E731"]

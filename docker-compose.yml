@@ -1,0 +1,84 @@
+# Local development: the whole platform with one command.
+#
+#   docker compose up --build
+#   open http://localhost:3000
+#
+# Starts PostgreSQL, applies the migrations, then runs the API, one worker and the web
+# app. Sign-in uses development accounts (AUTH_MODE=dev): no Supabase project is needed.
+# Not for production: passwords and secrets below are development defaults.
+
+x-api-environment: &api-environment
+  APP_ENV: development
+  DATABASE_URL: postgresql://postgres:postgres@db:5432/tatmaq
+  AUTH_MODE: dev
+  STORAGE_BACKEND: local
+  AI_PROVIDER: ${AI_PROVIDER:-none}
+  AI_API_KEY: ${AI_API_KEY:-}
+  AI_MODEL: ${AI_MODEL:-}
+  AI_BASE_URL: ${AI_BASE_URL:-}
+
+x-api-image: &api-image
+  build:
+    context: .
+    dockerfile: infrastructure/docker/api.Dockerfile
+  image: tatmaq-api:dev
+  environment: *api-environment
+
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tatmaq
+    ports:
+      - "5432:5432" # lets you run the API and the tests on your machine against this database
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tatmaq"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    <<: *api-image
+    command: python /srv/scripts/migrate.py
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    <<: *api-image
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "8000:8000"
+    volumes:
+      - file-data:/srv/var # the API receives uploads here...
+
+  worker:
+    <<: *api-image
+    command: python -m app.workers.worker
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - file-data:/srv/var # ...and the worker reads them from the same volume
+
+  web:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/web.Dockerfile
+      args:
+        API_PROXY_TARGET: http://api:8000
+    image: tatmaq-web:dev
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+volumes:
+  db-data:
+  file-data:

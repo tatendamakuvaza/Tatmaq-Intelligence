@@ -12,14 +12,14 @@ INSERT INTO roles (name, description, permissions) VALUES
     'Full control of the organisation.',
     '{"organisation:manage": true, "members:manage": true, "workspaces:create": true,
       "datasets:upload": true, "analysis:run": true, "analysis:cancel": true,
-      "reports:download": true, "audit:view": true}'
+      "reports:download": true, "audit:view": true, "learning:write": true}'
 ),
 (
     'admin',
     'Manages workspaces and members; can do everything an analyst can.',
     '{"organisation:manage": true, "members:manage": true, "workspaces:create": true,
       "datasets:upload": true, "analysis:run": true, "analysis:cancel": true,
-      "reports:download": true, "audit:view": true}'
+      "reports:download": true, "audit:view": true, "learning:write": true}'
 ),
 (
     'analyst',
@@ -31,6 +31,12 @@ INSERT INTO roles (name, description, permissions) VALUES
     'viewer',
     'Read-only: can view results and download reports.',
     '{"reports:download": true}'
+),
+(
+    'agent',
+    'An external AI assistant working through the agent bridge: runs analyses and records lessons. Cannot manage the organisation, its members or its workspaces.',
+    '{"datasets:upload": true, "analysis:run": true, "analysis:cancel": true,
+      "reports:download": true, "learning:write": true}'
 )
 ON CONFLICT (name) DO UPDATE
 SET description = EXCLUDED.description,

@@ -192,11 +192,16 @@ GRANT UPDATE (learning_profile) ON organisations TO tatmaq_app_user;
 DROP POLICY IF EXISTS organisations_member_select ON organisations;
 CREATE POLICY organisations_member_select ON organisations
     FOR SELECT TO tatmaq_app_user USING (is_org_member(id));
+-- The 'agent' role (the agent bridge) may do to data exactly what an analyst may do:
+-- upload datasets, run and cancel analyses, download reports. It is never an owner or admin.
+
+-- Only the learning_profile column may be updated (see the column grant above), and only
+-- by an owner, an admin, or the agent role used by the agent bridge.
 DROP POLICY IF EXISTS organisations_admin_update ON organisations;
 CREATE POLICY organisations_admin_update ON organisations
     FOR UPDATE TO tatmaq_app_user
-    USING (has_org_role(id, ARRAY['owner', 'admin']))
-    WITH CHECK (has_org_role(id, ARRAY['owner', 'admin']));
+    USING (has_org_role(id, ARRAY['owner', 'admin', 'agent']))
+    WITH CHECK (has_org_role(id, ARRAY['owner', 'admin', 'agent']));
 
 -- profiles: your own, plus colleagues in your organisations
 DROP POLICY IF EXISTS profiles_visible_select ON profiles;
@@ -238,12 +243,12 @@ CREATE POLICY datasets_member_access ON datasets
 DROP POLICY IF EXISTS datasets_member_insert ON datasets;
 CREATE POLICY datasets_member_insert ON datasets
     FOR INSERT TO tatmaq_app_user
-    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst']));
+    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst', 'agent']));
 DROP POLICY IF EXISTS datasets_member_update ON datasets;
 CREATE POLICY datasets_member_update ON datasets
     FOR UPDATE TO tatmaq_app_user
-    USING (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst']))
-    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst']));
+    USING (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst', 'agent']))
+    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst', 'agent']));
 
 DROP POLICY IF EXISTS dataset_versions_member_select ON dataset_versions;
 CREATE POLICY dataset_versions_member_select ON dataset_versions
@@ -251,7 +256,7 @@ CREATE POLICY dataset_versions_member_select ON dataset_versions
 DROP POLICY IF EXISTS dataset_versions_member_insert ON dataset_versions;
 CREATE POLICY dataset_versions_member_insert ON dataset_versions
     FOR INSERT TO tatmaq_app_user
-    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst']));
+    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst', 'agent']));
 
 DROP POLICY IF EXISTS dataset_columns_member_select ON dataset_columns;
 CREATE POLICY dataset_columns_member_select ON dataset_columns
@@ -264,12 +269,12 @@ CREATE POLICY analysis_jobs_member_select ON analysis_jobs
 DROP POLICY IF EXISTS analysis_jobs_member_insert ON analysis_jobs;
 CREATE POLICY analysis_jobs_member_insert ON analysis_jobs
     FOR INSERT TO tatmaq_app_user
-    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst']));
+    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst', 'agent']));
 DROP POLICY IF EXISTS analysis_jobs_member_update ON analysis_jobs;
 CREATE POLICY analysis_jobs_member_update ON analysis_jobs
     FOR UPDATE TO tatmaq_app_user
-    USING (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst']))
-    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst']));
+    USING (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst', 'agent']))
+    WITH CHECK (has_org_role(organisation_id, ARRAY['owner', 'admin', 'analyst', 'agent']));
 
 -- agent activity, findings and reports: read-only to members
 DROP POLICY IF EXISTS agent_tasks_member_select ON agent_tasks;

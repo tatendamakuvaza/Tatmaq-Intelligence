@@ -151,6 +151,13 @@ quote the verified findings of a completed analysis you attach, and the connecte
 any other provider) adds interpretation and broader context. Without a model the page still shows
 the verified answer; without an attached analysis the model gives general guidance only and says so.
 
+**The agent bridge** lets an outside AI assistant — an Arena Agent Mode session, or any MCP client —
+work *inside* your installation: it signs in with a dedicated `agent` role, reads your datasets and
+verified findings, runs analyses and records lessons. It cannot manage the organisation, its members
+or its workspaces, and it never leaves its own organisation. See
+[`docs/agent-bridge/README.md`](docs/agent-bridge/README.md) for the three-step setup, the command
+reference and how to revoke access.
+
 ## Deployment
 
 See [`infrastructure/deployment/README.md`](infrastructure/deployment/README.md). It describes two

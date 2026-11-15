@@ -831,7 +831,7 @@ ALTER TABLE public.analysis_jobs ENABLE ROW LEVEL SECURITY;
 --
 -- Name: analysis_jobs analysis_jobs_member_insert; Type: POLICY; Schema: public; Owner: -
 --
-CREATE POLICY analysis_jobs_member_insert ON public.analysis_jobs FOR INSERT TO tatmaq_app_user WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text]));
+CREATE POLICY analysis_jobs_member_insert ON public.analysis_jobs FOR INSERT TO tatmaq_app_user WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text, 'agent'::text]));
 --
 -- Name: analysis_jobs analysis_jobs_member_select; Type: POLICY; Schema: public; Owner: -
 --
@@ -839,7 +839,7 @@ CREATE POLICY analysis_jobs_member_select ON public.analysis_jobs FOR SELECT TO 
 --
 -- Name: analysis_jobs analysis_jobs_member_update; Type: POLICY; Schema: public; Owner: -
 --
-CREATE POLICY analysis_jobs_member_update ON public.analysis_jobs FOR UPDATE TO tatmaq_app_user USING (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text])) WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text]));
+CREATE POLICY analysis_jobs_member_update ON public.analysis_jobs FOR UPDATE TO tatmaq_app_user USING (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text, 'agent'::text])) WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text, 'agent'::text]));
 --
 -- Name: analysis_results; Type: ROW SECURITY; Schema: public; Owner: -
 --
@@ -883,7 +883,7 @@ ALTER TABLE public.dataset_versions ENABLE ROW LEVEL SECURITY;
 --
 -- Name: dataset_versions dataset_versions_member_insert; Type: POLICY; Schema: public; Owner: -
 --
-CREATE POLICY dataset_versions_member_insert ON public.dataset_versions FOR INSERT TO tatmaq_app_user WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text]));
+CREATE POLICY dataset_versions_member_insert ON public.dataset_versions FOR INSERT TO tatmaq_app_user WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text, 'agent'::text]));
 --
 -- Name: dataset_versions dataset_versions_member_select; Type: POLICY; Schema: public; Owner: -
 --
@@ -899,11 +899,11 @@ CREATE POLICY datasets_member_access ON public.datasets FOR SELECT TO tatmaq_app
 --
 -- Name: datasets datasets_member_insert; Type: POLICY; Schema: public; Owner: -
 --
-CREATE POLICY datasets_member_insert ON public.datasets FOR INSERT TO tatmaq_app_user WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text]));
+CREATE POLICY datasets_member_insert ON public.datasets FOR INSERT TO tatmaq_app_user WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text, 'agent'::text]));
 --
 -- Name: datasets datasets_member_update; Type: POLICY; Schema: public; Owner: -
 --
-CREATE POLICY datasets_member_update ON public.datasets FOR UPDATE TO tatmaq_app_user USING (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text])) WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text]));
+CREATE POLICY datasets_member_update ON public.datasets FOR UPDATE TO tatmaq_app_user USING (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text, 'agent'::text])) WITH CHECK (public.has_org_role(organisation_id, ARRAY['owner'::text, 'admin'::text, 'analyst'::text, 'agent'::text]));
 --
 -- Name: organisation_memberships memberships_visible_select; Type: POLICY; Schema: public; Owner: -
 --
@@ -919,7 +919,7 @@ ALTER TABLE public.organisations ENABLE ROW LEVEL SECURITY;
 --
 -- Name: organisations organisations_admin_update; Type: POLICY; Schema: public; Owner: -
 --
-CREATE POLICY organisations_admin_update ON public.organisations FOR UPDATE TO tatmaq_app_user USING (public.has_org_role(id, ARRAY['owner'::text, 'admin'::text])) WITH CHECK (public.has_org_role(id, ARRAY['owner'::text, 'admin'::text]));
+CREATE POLICY organisations_admin_update ON public.organisations FOR UPDATE TO tatmaq_app_user USING (public.has_org_role(id, ARRAY['owner'::text, 'admin'::text, 'agent'::text])) WITH CHECK (public.has_org_role(id, ARRAY['owner'::text, 'admin'::text, 'agent'::text]));
 --
 -- Name: organisations organisations_member_select; Type: POLICY; Schema: public; Owner: -
 --

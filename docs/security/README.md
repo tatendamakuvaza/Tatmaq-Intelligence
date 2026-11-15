@@ -104,9 +104,23 @@ schema's marker first, so passwords can never land in a real Supabase `auth.user
   findings of a single completed analysis — never raw rows. Its answer is labelled as interpretation;
   company figures come from the verified analysis. It needs `analysis:run` and the same tenant checks
   as every other endpoint.
-- The learning profile is guidance only. Only owners/admins may change it (an owner/admin `UPDATE`
-  policy plus a column-level `UPDATE` grant on `organisations.learning_profile`), and every change is
-  audited. It cannot alter calculations, validation or Row Level Security.
+- The learning profile is guidance only. Owners and admins may rewrite it; the `agent` role may only
+  append lessons. Both are enforced by an `UPDATE` policy plus a column-level `UPDATE` grant on
+  `organisations.learning_profile`, every change is audited, and none of it can alter calculations,
+  validation or Row Level Security.
+
+## The agent bridge
+
+An external AI assistant connects with its own account in the `agent` role, not with a shared key:
+
+- The role may do to data what an analyst may do (upload, analyse, cancel, download) plus append
+  lessons. It has no `organisation:manage`, `members:manage` or `workspaces:create`, so it cannot
+  administer anything, and the same Row Level Security policies keep it inside one organisation.
+- Its actions carry its own user id in the audit log. `scripts/agent_account.py revoke` suspends the
+  membership, which ends access immediately even for tokens that have not expired; `rotate` replaces
+  the password. Sessions last eight hours.
+- It reads results through the same endpoints as the web app, so it can only ever quote figures the
+  verification step approved. See [`../agent-bridge/README.md`](../agent-bridge/README.md).
 
 ## Reports
 

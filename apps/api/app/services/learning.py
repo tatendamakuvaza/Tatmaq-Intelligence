@@ -67,8 +67,8 @@ def save(db: Session, ctx: TenantContext, body: LearningProfileIn) -> LearningPr
 
 
 def add_lesson(db: Session, ctx: TenantContext, lesson: str, *, source: str | None = None) -> LearningProfileOut:
-    """Append a short, human-readable lesson. Owner/admin only."""
-    ctx.require("organisation:manage")
+    """Append a short, human-readable lesson. Owner, admin or bridge agent only."""
+    ctx.require("learning:write")
     organisation = db.get(Organisation, ctx.organisation_id)
     if organisation is None:
         raise NotFound("Organisation not found.")

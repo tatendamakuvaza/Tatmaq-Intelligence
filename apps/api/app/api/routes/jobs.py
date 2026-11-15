@@ -72,7 +72,7 @@ def cancel_job(job_id: UUID, ctx: Tenant, db: Db) -> JobOut:
 
 @router.post("/analysis-jobs/{job_id}/feedback", tags=["analysis"])
 def submit_feedback(job_id: UUID, body: JobFeedbackIn, ctx: Tenant, db: Db) -> dict:
-    """Record executive feedback on a completed analysis. A lesson is saved only for owners/admins."""
+    """Record executive feedback on a completed analysis. A lesson is saved only for roles with learning:write."""
     job = jobs.get(db, ctx, job_id)
     audit.record(
         db,
@@ -84,7 +84,7 @@ def submit_feedback(job_id: UUID, body: JobFeedbackIn, ctx: Tenant, db: Db) -> d
         details={"rating": body.rating},
     )
     lesson_saved = False
-    if body.lesson and ctx.can("organisation:manage"):
+    if body.lesson and ctx.can("learning:write"):
         learning.add_lesson(db, ctx, body.lesson, source=f"analysis {job.id}")
         lesson_saved = True
     else:

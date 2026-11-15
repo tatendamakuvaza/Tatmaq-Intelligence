@@ -7,7 +7,7 @@ PostgreSQL 15 or newer (developed and tested on 17). The schema is owned by SQL 
 | --- | --- | --- |
 | `database/migrations/` | once each, in order, recorded with a checksum | `0001` the specification's 15 tables; `0002` constraints, tenant-aware keys, queue columns, indexes; `0003` the two tables that hold files when `STORAGE_BACKEND=database`; `0004` `organisations.learning_profile` (JSONB guidance for the agents) |
 | `database/policies/` | on every run (idempotent) | the restricted role, helper functions, Row Level Security policies, privileges |
-| `database/seeds/` | on every run (idempotent) | the four system roles and their permissions |
+| `database/seeds/` | on every run (idempotent) | the five system roles and their permissions (`owner`, `admin`, `analyst`, `viewer`, `agent`) |
 | `database/local/` | once each, but only when the database has no `auth` schema or has this project's own (never on Supabase) | `000` a stand-in for Supabase's `auth.users` and `auth.uid()`; `001` what the built-in sign-in adds to it (the lock after repeated wrong passwords) |
 | `database/schema.sql` | never (generated, for reading) | the resulting schema in one file |
 

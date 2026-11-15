@@ -25,7 +25,9 @@ const EMPTY: Form = { business_context: "", glossary: "", analysis_preferences: 
  */
 export function LearningSettings() {
   const { can } = useSession();
+  // Owners and admins edit the whole profile; the bridge agent role may only add lessons.
   const editable = can("organisation:manage");
+  const canTeach = can("learning:write");
   const profile = useApi<LearningProfile>("/organisations/learning-profile");
   // The draft is null until the user edits something; until then the form shows
   // the server's copy, so a reload after saving always re-syncs without an effect.
@@ -163,7 +165,7 @@ export function LearningSettings() {
             ) : (
               <p className="small muted">No lessons yet. Rate an analysis on its results page, or add one below.</p>
             )}
-            {editable ? (
+            {canTeach ? (
               <div className="row" style={{ flexWrap: "nowrap" }}>
                 <input
                   className="input"
